@@ -10,10 +10,17 @@ var zhuoguiMgr = function () {
     this.gui = [];
     this.players = [];
     this.seatIndex = 0;
+    this.trun = 0;
     this.countBySeat = {};
+    this.playersBySeat = {};
+    this.thisTrunDrank ={};
 }
 
 var pro = zhuoguiMgr.prototype;
+
+pro.getGui = function () {
+    return this.gui;
+}
 
 pro.init = function (app,guinum,di) {
     this.app = app;
@@ -26,6 +33,35 @@ pro.dingGui2 =function () {
         var gui = _.random(1,6);
         this.gui.push(gui);
     }
+};
+pro.zhangui = function (seatIndex,craps) {
+    if(!this.gui){
+        return;
+    }
+    this.countBySeat[seatIndex] = craps;
+    this.pushAll('zhangui',{seat:seatIndex,craps:craps});
+    if(this.countBySeat.length == this.players){
+        this.pushAll('gameBegin',{trun:this.trun});
+    }
+};
+//
+function shangjiahei(seatIndex) {
+    if(seatIndex-1<0){
+        
+    }else {
+
+    }
+}
+
+pro.shoot = function (seatIndex,crap1,crap2) {
+    var totalValue = crap1 + crap2;
+    switch (totalValue){
+        case 7:
+            shangjiahei(seatIndex);
+            break;
+        case 8:
+
+    }
 }
 
 pro.addPlayer = function (uid) {
@@ -36,6 +72,8 @@ pro.addPlayer = function (uid) {
         this.seatIndex++;
     }
 }
+
+
 
 pro.pushAll = function (route,msg) {
     var channelService = this.app.get('channelService');
